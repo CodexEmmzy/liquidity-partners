@@ -1,0 +1,8 @@
+# Ignore all node_modules folders
+**/node_modules/
+
+# Ignore all package.json files
+**/package.json
+
+# Ignore the dist folder
+**/dist/
