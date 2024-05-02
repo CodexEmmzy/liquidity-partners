@@ -37,11 +37,3 @@ Before running the code, please follow these instructions:
    ```
 
 Now, both the server and client should be running, and you can access the application in your web browser.
-
-
-- Make sure you have Node.js and npm installed on your system.
-- This project assumes you have a basic understanding of Node.js, npm, and web development.
-- If you encounter any issues, please refer to the project's documentation or seek help from the project maintainers.
-```
-
-Feel free to customize the instructions or add any additional information specific to your project.
