@@ -27,10 +27,14 @@ const YourComponent = () => {
   };
 
   const fetchUserWallet = async () => {
+
     try {
+      console.log("running");
+
       const response = await axios.post("http://localhost:4000/fetchUserWallet", {
         username: username,
       });
+      console.log(response);
       const data = response.data;
       return data.wallet_id;
     } catch (err) {
@@ -43,19 +47,18 @@ const YourComponent = () => {
     setIsLoading(true);
 
     try {
-      const vendingToken = await fetchVendingToken();
-      const userWalletAddress = await fetchUserWallet();
-
       const response = await axios.post("http://localhost:4000/handleVendEspees", {
         vendingToken,
-        userWalletAddress,
+        userWalletAddress: "0x1eab27b9f4aedf2e6d7fb7973bd43522bc6317f9",
         vendingAmount,
       });
-
+      console.log("Response:", response.data); // Log the response data
       setApiResponse(response.data);
     } catch (error) {
       console.error("Error vending Espees:", error);
-    } finally {
+      setApiResponse(null);
+    }
+     finally {
       setIsLoading(false);
     }
   };

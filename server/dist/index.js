@@ -11,6 +11,7 @@ const axios_1 = __importDefault(require("axios"));
 const app = (0, express_1.default)();
 const router = express_1.default.Router();
 app.use((0, cors_1.default)());
+const port = process.env.PORT || 18012;
 const apiKey = "V9yKoxl5EljDbawloXWHaD2zgclp28U9f5YSY3U3";
 const agentWallet = "0x0bd3e40f8410ea473850db5479348f074d254ded";
 const agentPin = "1234";
@@ -50,15 +51,19 @@ router.post(`/fetchVendingToken`, exports.fetchVendingToken);
 const fetchUserWallet = async (req, res) => {
     const { username } = req.body;
     try {
-        const response = await axios_1.default.post("https://api.espees.org/user/address", {
-            username: username,
-        }, {
+        const url = "https://api.espees.org/user/address";
+        const options = {
             headers: {
                 "Content-Type": "application/json",
                 "x-api-key": apiKey,
             },
-        });
+            data: {
+                username
+            }
+        };
+        const response = await axios_1.default.post(url, { username }, options);
         const data = response.data;
+        return data;
         return data;
     }
     catch (err) {
@@ -69,6 +74,7 @@ const fetchUserWallet = async (req, res) => {
 exports.fetchUserWallet = fetchUserWallet;
 router.post(`/fetchUserWallet`, exports.fetchUserWallet);
 router.post(`/handleVendEspees`, async function (req, res) {
+    console.log("Received request:", req.body);
     const { vendingToken, userWalletAddress, vendingAmount } = req.body;
     try {
         const vendEspeesResponse = await axios_1.default.post("https://api.espees.org/v2/vending/vend", {
@@ -82,6 +88,7 @@ router.post(`/handleVendEspees`, async function (req, res) {
             },
         });
         const vendEspeesData = vendEspeesResponse.data;
+        console.log("Vending response:", vendEspeesData);
         res.status(200).json(vendEspeesData);
     }
     catch (error) {
@@ -92,6 +99,9 @@ router.post(`/handleVendEspees`, async function (req, res) {
 app.use(express_1.default.json());
 app.use(router);
 app.listen(4000, () => {
-    console.log("Server is running on port 4000");
+    console.log("");
+});
+app.listen(port, () => {
+    console.log(`Server is running on port ${port}`);
 });
 //# sourceMappingURL=index.js.map

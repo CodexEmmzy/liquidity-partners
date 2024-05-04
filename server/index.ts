@@ -7,6 +7,7 @@ const app = express();
 const router = express.Router();
 
 app.use(cors());
+const port = process.env.PORT || 18012;
 
 const apiKey: string = "V9yKoxl5EljDbawloXWHaD2zgclp28U9f5YSY3U3";
 const agentWallet: string = "0x0bd3e40f8410ea473850db5479348f074d254ded";
@@ -57,29 +58,37 @@ export const fetchUserWallet = async (
   res: Response
 ): Promise<any> => {
   const { username } = req.body; // Extract username from request body
+
   try {
-    const response = await axios.post(
-      "https://api.espees.org/user/address",
-      {
-        username: username,
+
+    const url = "https://api.espees.org/user/address"
+
+    const options: any = {
+      headers: {
+        "Content-Type": "application/json",
+        "x-api-key": apiKey,
       },
-      {
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": apiKey,
-        },
+      data: {
+        username
       }
-    );
-    const data = response.data;
+    }
+
+   // Send the request with the username in the request body
+   const response = await axios.post(url, { username }, options);
+
+   const data = response.data;
+   return data;
     return data;
   } catch (err) {
     console.error(err);
     res.status(500).json({ msg: `Internal Server Error.` });
   }
 };
+
 router.post(`/fetchUserWallet`, fetchUserWallet);
 
 router.post(`/handleVendEspees`, async function (req: any, res: any) {
+  console.log("Received request:", req.body); // Log the received request body
   const { vendingToken, userWalletAddress, vendingAmount } = req.body; // Extract data from request body
   try {
     const vendEspeesResponse = await axios.post(
@@ -97,6 +106,7 @@ router.post(`/handleVendEspees`, async function (req: any, res: any) {
       }
     );
     const vendEspeesData = vendEspeesResponse.data;
+    console.log("Vending response:", vendEspeesData); // Log the vending response data
     res.status(200).json(vendEspeesData); // Respond with vending response data
   } catch (error) {
     console.error("Error vending Espees:", error);
@@ -104,9 +114,14 @@ router.post(`/handleVendEspees`, async function (req: any, res: any) {
   }
 });
 
+
 app.use(express.json());
 app.use(router);
 
 app.listen(4000, () => {
-  console.log("Server is running on port 4000");
+  console.log("");
 });
+
+app.listen(port, () => {
+  console.log(`Server is running on port ${port}`)
+})
