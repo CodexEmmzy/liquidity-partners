@@ -17,7 +17,7 @@ const YourComponent = () => {
 
   const fetchVendingToken = async () => {
     try {
-      const response = await axios.post("http://localhost:4000/fetchVendingToken");
+      const response = await axios.post("https://liquidity-partners.onrender.com/fetchVendingToken");
       const data = response.data;
       setVendingToken(data.vending_token);
       return data.vending_token;
@@ -31,7 +31,7 @@ const YourComponent = () => {
     try {
       console.log("running");
 
-      const response = await axios.post("http://localhost:4000/fetchUserWallet", {
+      const response = await axios.post("https://liquidity-partners.onrender.com/fetchUserWallet", {
         username: username,
       });
       console.log(response);
@@ -47,7 +47,7 @@ const YourComponent = () => {
     setIsLoading(true);
 
     try {
-      const response = await axios.post("http://localhost:4000/handleVendEspees", {
+      const response = await axios.post("https://liquidity-partners.onrender.com/handleVendEspees", {
         vendingToken,
         userWalletAddress: "0x1eab27b9f4aedf2e6d7fb7973bd43522bc6317f9",
         vendingAmount,
