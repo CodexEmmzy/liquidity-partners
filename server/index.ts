@@ -118,9 +118,6 @@ router.post(`/handleVendEspees`, async function (req: any, res: any) {
 app.use(express.json());
 app.use(router);
 
-app.listen(4000, () => {
-  console.log("");
-});
 
 app.listen(port, () => {
   console.log(`Server is running on port ${port}`)
